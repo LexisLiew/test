@@ -1,0 +1,367 @@
+HTML
+Copy
+
+<!DOCTYPE html>
+<!-- 
+  ↑ 这一行告诉浏览器：这是一个 HTML5 文件
+  每个网页都必须以这行开头
+-->
+ 
+<html lang="zh">
+<!-- 
+  <html> 是整个页面的"容器"，所有内容都装在里面
+  lang="zh" 告诉浏览器这是中文页面
+-->
+ 
+<head>
+  <!-- 
+    <head> 里放的是"幕后信息"——浏览器看但用户看不到
+    比如页面标题、样式、字体等
+  -->
+ 
+  <meta charset="UTF-8">
+  <!-- ↑ 支持中文字符，必须有 -->
+ 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ↑ 让页面在手机上也能正常显示 -->
+ 
+  <title>我的实验场</title>
+  <!-- ↑ 这里的文字会显示在浏览器标签页上 -->
+ 
+  <style>
+    /* 
+      <style> 标签里写 CSS——控制页面的外观
+      CSS 的格式是：选择器 { 属性: 值; }
+    */
+ 
+    /* 
+      * 表示"选中所有元素"
+      box-sizing 是一个让布局计算更直觉的设置，先记住加就对了
+    */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+ 
+    /* 
+      body 是页面的主体
+      下面设置了字体、背景色、文字颜色
+    */
+    body {
+      font-family: "Helvetica Neue", "PingFang SC", sans-serif;
+      /* ↑ 字体优先级从左到右，第一个找不到就用下一个 */
+      background-color: #f5f5f0;
+      color: #1a1a1a;
+      min-height: 100vh;
+      /* ↑ 100vh = 屏幕高度的100%，让页面至少占满全屏 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+      /* ↑ padding 是内边距：上下60px，左右20px */
+    }
+ 
+    /* 
+      .container 是一个"类"选择器
+      HTML 里写 class="container" 就会应用这些样式
+    */
+    .container {
+      width: 100%;
+      max-width: 680px;
+      /* ↑ 最宽不超过 680px，在大屏幕上不会拉太宽 */
+    }
+ 
+    /* 标题样式 */
+    h1 {
+      font-size: 2.2rem;
+      /* ↑ rem 是相对单位，1rem ≈ 16px，2.2rem ≈ 35px */
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+ 
+    .subtitle {
+      color: #888;
+      font-size: 1rem;
+      margin-bottom: 48px;
+    }
+ 
+    /* 卡片样式 */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 16px;
+      border: 1px solid #e8e8e4;
+      /* ↑ border: 粗细 类型 颜色 */
+    }
+ 
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+ 
+    /* 按钮样式 */
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #1a1a1a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      /* ↑ cursor: pointer 让鼠标悬停时变成手型 */
+      font-size: 0.9rem;
+      margin-right: 8px;
+      margin-top: 8px;
+      transition: background-color 0.2s;
+      /* ↑ transition 让颜色变化有动画，0.2秒过渡 */
+    }
+ 
+    .btn:hover {
+      /* ↑ :hover 是"伪类"，表示鼠标悬停时的样式 */
+      background-color: #444;
+    }
+ 
+    .btn.secondary {
+      background-color: transparent;
+      color: #1a1a1a;
+      border: 1px solid #ddd;
+    }
+ 
+    .btn.secondary:hover {
+      background-color: #f0f0f0;
+    }
+ 
+    /* 文字输入框 */
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      margin-bottom: 10px;
+      outline: none;
+      /* ↑ 去掉默认的蓝色轮廓 */
+      transition: border-color 0.2s;
+    }
+ 
+    input[type="text"]:focus, textarea:focus {
+      /* ↑ :focus 是获得焦点时（点击后）的样式 */
+      border-color: #1a1a1a;
+    }
+ 
+    /* 颜色选择器实验区 */
+    .color-grid {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+ 
+    .color-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+ 
+    .color-swatch:hover {
+      transform: scale(1.15);
+      /* ↑ 悬停时放大到 1.15 倍 */
+    }
+ 
+    /* 输出区域 */
+    #output {
+      background: #f5f5f0;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 0.9rem;
+      color: #555;
+      min-height: 48px;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+ 
+    .footer {
+      margin-top: 40px;
+      color: #bbb;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+  </style>
+</head>
+ 
+<body>
+  <!-- 
+    <body> 里放的是用户实际看到的内容
+    HTML 标签像积木，一层套一层
+  -->
+ 
+  <div class="container">
+    <!-- ↑ <div> 是一个"盒子"，本身没有样式，用来组织内容 -->
+ 
+    <h1>实验场 🧪</h1>
+    <!-- ↑ h1 是最大的标题，h2 次之，一直到 h6 -->
+ 
+    <p class="subtitle">随便改，改坏了刷新就好。</p>
+    <!-- ↑ <p> 是段落标签 -->
+ 
+ 
+    <!-- ===== 实验一：按钮交互 ===== -->
+    <div class="card">
+      <h2>实验一：按钮</h2>
+ 
+      <p style="margin-bottom: 14px; color: #666; font-size: 0.9rem;">
+        点击按钮，看看 JavaScript 能做什么。
+        <!-- ↑ style="" 可以直接在标签上写样式，叫"内联样式" -->
+      </p>
+ 
+      <button class="btn" onclick="sayHello()">打个招呼</button>
+      <button class="btn secondary" onclick="changeBackground()">换个背景色</button>
+      <button class="btn secondary" onclick="resetBackground()">恢复默认</button>
+ 
+      <div id="output">← 点上面的按钮试试</div>
+      <!-- ↑ id="output" 是唯一标识，JavaScript 用它找到这个元素 -->
+    </div>
+ 
+ 
+    <!-- ===== 实验二：文字输入 ===== -->
+    <div class="card">
+      <h2>实验二：输入框</h2>
+ 
+      <input type="text" id="nameInput" placeholder="输入你的名字">
+      <!-- ↑ placeholder 是输入框的提示文字 -->
+ 
+      <button class="btn" onclick="greetUser()">生成欢迎语</button>
+ 
+      <div id="greetOutput" style="margin-top: 12px; color: #666; font-size: 0.95rem;"></div>
+    </div>
+ 
+ 
+    <!-- ===== 实验三：颜色 ===== -->
+    <div class="card">
+      <h2>实验三：颜色</h2>
+      <p style="color: #666; font-size: 0.9rem; margin-bottom: 8px;">
+        点击色块，把页面背景换成这个颜色。
+      </p>
+ 
+      <div class="color-grid">
+        <!-- 
+          每个色块是一个 div
+          onclick 里直接写颜色值
+        -->
+        <div class="color-swatch" style="background:#f5f5f0" onclick="setBg('#f5f5f0')"></div>
+        <div class="color-swatch" style="background:#fde8d8" onclick="setBg('#fde8d8')"></div>
+        <div class="color-swatch" style="background:#d8eafd" onclick="setBg('#d8eafd')"></div>
+        <div class="color-swatch" style="background:#d8fde8" onclick="setBg('#d8fde8')"></div>
+        <div class="color-swatch" style="background:#fdd8f5" onclick="setBg('#fdd8f5')"></div>
+        <div class="color-swatch" style="background:#1a1a1a" onclick="setBg('#1a1a1a')"></div>
+      </div>
+    </div>
+ 
+ 
+    <!-- ===== 实验四：你的空白区域 ===== -->
+    <div class="card">
+      <h2>实验四：你的地盘</h2>
+      <p style="color: #aaa; font-size: 0.9rem; line-height: 1.7;">
+        这里是空的。<br>
+        试试改一改 HTML，放点你想放的东西。<br>
+        比如一句你喜欢的话，或者一个链接。
+      </p>
+ 
+      <!-- 在这里随便加内容 ↓ -->
+ 
+    </div>
+ 
+    <p class="footer">用 VS Code 打开这个文件，改完在浏览器里刷新就能看到效果。</p>
+  </div>
+ 
+ 
+  <script>
+    /*
+      <script> 标签里写 JavaScript——控制页面的行为
+      JavaScript 让页面"活"起来
+    */
+ 
+    // 双斜线开头的是注释，不会执行
+ 
+    // ===== 实验一的函数 =====
+ 
+    function sayHello() {
+      // function 定义一个函数（可以重复调用的代码块）
+      
+      var output = document.getElementById("output");
+      // ↑ 通过 id 找到页面上的元素，存到变量 output 里
+      
+      var messages = [
+        "你好！👋",
+        "Hello World！这是程序员的传统第一句话。",
+        "JavaScript 在运行了！",
+        "改改我试试？在 sayHello 函数里加一条。",
+      ];
+      // ↑ [] 是数组，存了一堆字符串
+      
+      var randomIndex = Math.floor(Math.random() * messages.length);
+      // ↑ Math.random() 生成 0~1 的随机数，乘以数组长度再取整
+      
+      output.textContent = messages[randomIndex];
+      // ↑ 把找到的元素的文字内容替换掉
+    }
+ 
+    function changeBackground() {
+      var colors = ["#fff5e6", "#e6f0ff", "#e6fff0", "#ffe6f5"];
+      var random = colors[Math.floor(Math.random() * colors.length)];
+      document.body.style.backgroundColor = random;
+      // ↑ document.body 就是 <body> 元素，可以直接改它的样式
+      
+      document.getElementById("output").textContent = "背景色改成了 " + random;
+      // ↑ 字符串用 + 拼接
+    }
+ 
+    function resetBackground() {
+      document.body.style.backgroundColor = "#f5f5f0";
+      document.getElementById("output").textContent = "恢复默认背景色了。";
+    }
+ 
+ 
+    // ===== 实验二的函数 =====
+ 
+    function greetUser() {
+      var name = document.getElementById("nameInput").value;
+      // ↑ .value 获取输入框里的值
+      
+      var greetDiv = document.getElementById("greetOutput");
+      
+      if (name === "") {
+        // ↑ if 判断：如果名字是空的
+        greetDiv.textContent = "你还没输入名字哦！";
+      } else {
+        greetDiv.textContent = "欢迎你，" + name + "！你的第一个网页正在运行 🎉";
+      }
+    }
+ 
+ 
+    // ===== 实验三的函数 =====
+ 
+    function setBg(color) {
+      document.body.style.backgroundColor = color;
+      
+      // 如果背景是深色，把文字也换成浅色
+      if (color === "#1a1a1a") {
+        document.body.style.color = "#f5f5f0";
+      } else {
+        document.body.style.color = "#1a1a1a";
+      }
+    }
+ 
+  </script>
+ 
+</body>
+</html>
